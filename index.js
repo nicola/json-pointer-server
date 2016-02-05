@@ -38,7 +38,7 @@ function get (req, res, data) {
 
   var string
   try {
-    string = JSON.stringify(content)
+    string = JSON.stringify(content, null, '  ')
   } catch (e) {
     res.statusCode = 500
     res.end('invalid json')
