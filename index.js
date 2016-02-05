@@ -70,8 +70,8 @@ function put (req, res, data) {
 
   req.on('end', function () {
     var json = content
-
-    if (json[0] === '[' || json[0] === '{') {
+    var isJson = json[0] === '[' || json[0] === '{'
+    if (isJson && req.headers.accept === 'application/json') {
       try {
         json = JSON.parse(content)
       } catch (e) {
