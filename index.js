@@ -8,6 +8,8 @@ function router (data) {
       get(req, res, data)
     } else if (req.method === 'HEAD') {
       head(req, res, data)
+    } else if (req.method === 'PUT') {
+      put(req, res, data)
     } else {
       res.statusCode = 406
       res.end('Only GET and HEAD available')
@@ -15,7 +17,7 @@ function router (data) {
   }
 }
 
-function retrieve (data, url) {
+function getter (data, url) {
   var content = jsonpointer.get(data, url)
   if (content === null && url === '/') {
     content = data
@@ -23,22 +25,64 @@ function retrieve (data, url) {
   return content
 }
 
+function setter (data, url, content) {
+  jsonpointer.set(data, url, content)
+}
+
 function get (req, res, data) {
-  var content = retrieve(data, req.url)
+  var content = getter(data, req.url)
   if (content === null) {
     res.statusCode = 404
     return res.end('Not Found')
   }
+
+  var string
+  try {
+    string = JSON.stringify(content)
+  } catch (e) {
+    res.statusCode = 500
+    res.end('invalid json')
+    return
+  }
+
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(content))
+  res.end(string)
 }
 
 function head (req, res, data) {
-  var content = retrieve(data, req.url)
+  var content = getter(data, req.url)
   if (content === null) {
     res.statusCode = 404
-    return res.end()
+    res.end()
+    return
   }
   res.statusCode = 200
   res.end()
+}
+
+function put (req, res, data) {
+  console.log('put')
+  var content = ''
+  req.on('data', function (chunk) {
+    content += chunk.toString()
+    console.log('content', content)
+  })
+
+  req.on('end', function () {
+    var json = content
+
+    if (json[0] === '[' || json[0] === '{') {
+      try {
+        json = JSON.parse(content)
+      } catch (e) {
+        res.statusCode = 500
+        res.end('invalid json')
+        return
+      }
+    }
+
+    setter(data, req.url, json)
+    res.statusCode = 200
+    res.end()
+  })
 }
