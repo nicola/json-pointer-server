@@ -12,7 +12,7 @@ function router (data) {
       put(req, res, data)
     } else {
       res.statusCode = 406
-      res.end('Only GET and HEAD available')
+      res.end('Only GET, HEAD and PUT available')
     }
   }
 }

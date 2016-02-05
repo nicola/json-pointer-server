@@ -33,6 +33,18 @@ GET http://example.com/people/1/name
 'Nicola'
 ```
 
+and also PUT
+
+```
+$ curl -X PUT -d 'Virginia' http://example.com/people/1/name
+// will set the name to be Virginia
+```
+
+```
+$ curl -H 'Accept: application/json' -X PUT -d '{"name": "Virginia"}' http://example.com/people/1
+// will set the name to be Virginia
+```
+
 ## Install
 
 ```bash
