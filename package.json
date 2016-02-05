@@ -1,6 +1,6 @@
 {
   "name": "json-pointer-server",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Server on top of [RFC6901]",
   "main": "index.js",
   "scripts": {
