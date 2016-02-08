@@ -1,5 +1,5 @@
 {
-  "name": "json-pointer-server",
+  "name": "jsonpointer-http",
   "version": "1.0.4",
   "description": "Server on top of [RFC6901]",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicola/json-pointer-server"
+    "url": "https://github.com/nicola/jsonpointer-http"
   },
   "author": "Nicola Greco <me@nicola.io> (http://nicolagreco.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nicola/json-pointer-server/issues"
+    "url": "https://github.com/nicola/jsonpointer-http/issues"
   },
-  "homepage": "https://github.com/nicola/json-pointer-server",
+  "homepage": "https://github.com/nicola/jsonpointer-http",
   "dependencies": {
     "jsonpointer": "^3.0.0"
   }

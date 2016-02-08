@@ -1,9 +1,9 @@
-# json-pointer-server
-> Server on top of [RFC6901]
+# jsonpointer-http
+> HTTP routes on top of [RFC6901]
 
 or simpler..
 
-> Server on top of JSON documents
+> HTTP routes on top of JSON documents
 
 ## Use
 
@@ -48,13 +48,13 @@ $ curl -H 'Accept: application/json' -X PUT -d '{"name": "Virginia"}' http://exa
 ## Install
 
 ```bash
-$ npm install --save json-pointer-server
+$ npm install --save jsonpointer-http
 ```
 
 Use it
 
 ```javascript
-var router = require('json-pointer-server')
+var router = require('jsonpointer-http')
 var http = require('http')
 var server = http.createServer(router({your: json: {'here'}}))
 server.listen(8080)

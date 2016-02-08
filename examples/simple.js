@@ -1,4 +1,4 @@
-// Require json-pointer-server
+// Require jsonpointer-http
 var router = require('../')
 var http = require('http')
 
