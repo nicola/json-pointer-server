@@ -1,6 +1,6 @@
 {
   "name": "jsonpointer-http",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Server on top of [RFC6901]",
   "main": "index.js",
   "scripts": {
