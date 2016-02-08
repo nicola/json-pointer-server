@@ -32,6 +32,7 @@ function get (req, res, store) {
   store.get(req.url, function (err, content) {
     if (err) {
       res.statusCode = 500
+      res.end()
       return
     }
     if (content === null) {
@@ -93,6 +94,7 @@ function put (req, res, store) {
     store.set(req.url, json, function (err) {
       if (err) {
         res.statusCode = 500
+        res.end()
         return
       }
       res.statusCode = 200
