@@ -1,6 +1,16 @@
 module.exports = router
 
+var MemoryStore = require('jsonpointer-store-abstract')
+
 function router (store) {
+  // Create an empty store
+  if (!store) {
+    store = MemoryStore({})
+  } else
+  // or if store is data, create an in-memory store
+  if (store.constructor.name === 'Object') {
+    store = MemoryStore(store)
+  }
   return function (req, res) {
     if (req.method === 'GET') {
       get(req, res, store)

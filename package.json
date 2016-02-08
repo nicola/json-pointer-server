@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/nicola/jsonpointer-http",
   "dependencies": {
-    "jsonpointer": "^3.0.0"
+    "jsonpointer": "^3.0.0",
+    "jsonpointer-store-abstract": "^0.1.2"
   },
   "devDependencies": {
     "jsonpointer-store-abstract": "^0.1.2"
