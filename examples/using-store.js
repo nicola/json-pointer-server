@@ -18,7 +18,6 @@ var data = {
 }
 
 var store = MemoryStore(data)
-console.log(store.data, data)
 var server = http.createServer(router(store))
 
 // Lets start our server
