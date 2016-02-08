@@ -17,10 +17,13 @@
   },
   "homepage": "https://github.com/nicola/jsonpointer-http",
   "dependencies": {
+    "json-to-ldp": "^0.1.3",
     "jsonpointer": "^3.0.0",
     "jsonpointer-store-abstract": "^0.1.2"
   },
   "devDependencies": {
+    "json-to-ldp": "^0.1.2",
+    "jsonpointer": "^3.0.0",
     "jsonpointer-store-abstract": "^0.1.2"
   }
 }

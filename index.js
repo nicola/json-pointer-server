@@ -12,6 +12,9 @@ function router (store) {
     store = MemoryStore(store)
   }
   return function (req, res) {
+    if (req.url[req.url.length - 1] === '/') {
+      req.url = req.url.slice(0, -1)
+    }
     if (req.method === 'GET') {
       get(req, res, store)
     } else if (req.method === 'HEAD') {
@@ -69,11 +72,9 @@ function head (req, res, store) {
 }
 
 function put (req, res, store) {
-  console.log('put')
   var content = ''
   req.on('data', function (chunk) {
     content += chunk.toString()
-    console.log('content', content)
   })
 
   req.on('end', function () {
