@@ -1,6 +1,7 @@
 // Require jsonpointer-http
 var router = require('../')
 var http = require('http')
+var MemoryStore = require('jsonpointer-store-abstract')
 
 // Create a http server and load the router
 var data = {
@@ -16,7 +17,9 @@ var data = {
   }]
 }
 
-var server = http.createServer(router(data))
+var store = MemoryStore(data)
+console.log(store.data, data)
+var server = http.createServer(router(store))
 
 // Lets start our server
 var PORT = process.env.PORT || 8080

@@ -1,15 +1,13 @@
 module.exports = router
 
-var jsonpointer = require('jsonpointer')
-
-function router (data) {
+function router (store) {
   return function (req, res) {
     if (req.method === 'GET') {
-      get(req, res, data)
+      get(req, res, store)
     } else if (req.method === 'HEAD') {
-      head(req, res, data)
+      head(req, res, store)
     } else if (req.method === 'PUT') {
-      put(req, res, data)
+      put(req, res, store)
     } else {
       res.statusCode = 406
       res.end('Only GET, HEAD and PUT available')
@@ -17,50 +15,50 @@ function router (data) {
   }
 }
 
-function getter (data, url) {
-  var content = jsonpointer.get(data, url)
-  if (content === null && url === '/') {
-    content = data
-  }
-  return content
+function get (req, res, store) {
+  store.get(req.url, function (err, content) {
+    if (err) {
+      res.statusCode = 500
+      return
+    }
+    if (content === null) {
+      res.statusCode = 404
+      res.end('Not Found')
+      return
+    }
+
+    var string
+    try {
+      string = JSON.stringify(content, null, '  ')
+    } catch (e) {
+      res.statusCode = 500
+      res.end('invalid json')
+      return
+    }
+
+    res.writeHead(200, {'Content-Type': 'application/json'})
+    res.end(string)
+  })
 }
 
-function setter (data, url, content) {
-  jsonpointer.set(data, url, content)
-}
-
-function get (req, res, data) {
-  var content = getter(data, req.url)
-  if (content === null) {
-    res.statusCode = 404
-    return res.end('Not Found')
-  }
-
-  var string
-  try {
-    string = JSON.stringify(content, null, '  ')
-  } catch (e) {
-    res.statusCode = 500
-    res.end('invalid json')
-    return
-  }
-
-  res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(string)
-}
-
-function head (req, res, data) {
-  var content = getter(data, req.url)
-  if (content === null) {
-    res.statusCode = 404
+function head (req, res, store) {
+  store.get(req.url, function (err, content) {
+    if (err) {
+      res.statusCode = 500
+      res.end()
+      return
+    }
+    if (content === null) {
+      res.statusCode = 404
+      res.end()
+      return
+    }
+    res.statusCode = 200
     res.end()
-    return
-  }
-  res.statusCode = 200
-  res.end()
+  })
 }
 
-function put (req, res, data) {
+function put (req, res, store) {
   console.log('put')
   var content = ''
   req.on('data', function (chunk) {
@@ -81,8 +79,13 @@ function put (req, res, data) {
       }
     }
 
-    setter(data, req.url, json)
-    res.statusCode = 200
-    res.end()
+    store.set(req.url, json, function (err) {
+      if (err) {
+        res.statusCode = 500
+        return
+      }
+      res.statusCode = 200
+      res.end()
+    })
   })
 }
