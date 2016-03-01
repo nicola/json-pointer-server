@@ -21,6 +21,8 @@ function router (store) {
       head(req, res, store)
     } else if (req.method === 'PUT') {
       put(req, res, store)
+    } else if (req.method === 'PATCH') {
+      patch(req, res, store)
     } else {
       res.statusCode = 406
       res.end('Only GET, HEAD and PUT available')
@@ -92,6 +94,43 @@ function put (req, res, store) {
     }
 
     store.set(req.url, json, function (err) {
+      if (err) {
+        res.statusCode = 500
+        res.end()
+        return
+      }
+      res.statusCode = 200
+      res.end()
+    })
+  })
+}
+
+function patch (req, res, store) {
+  if (!store.update) {
+    res.statusCode = 406
+    res.end()
+    return
+  }
+
+  var content = ''
+  req.on('data', function (chunk) {
+    content += chunk.toString()
+  })
+
+  req.on('end', function () {
+    var json = content
+    var isJson = json[0] === '[' || json[0] === '{'
+    if (isJson && req.headers.accept === 'application/json') {
+      try {
+        json = JSON.parse(content)
+      } catch (e) {
+        res.statusCode = 500
+        res.end('invalid json')
+        return
+      }
+    }
+
+    store.update(req.url, json, function (err) {
       if (err) {
         res.statusCode = 500
         res.end()
